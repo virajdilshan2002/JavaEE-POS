@@ -7,7 +7,11 @@
         <element id="directory" name="classes">
           <element id="module-output" name="JavaEE - POS" />
         </element>
-        <element id="directory" name="lib" />
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="antlr-2.7.7" />
+          <element id="library" level="project" name="commons-dbcp2-2.13.0" />
+          <element id="library" level="project" name="mysql-connector-j-9.1.0" />
+        </element>
       </element>
     </root>
   </artifact>

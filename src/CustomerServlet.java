@@ -5,10 +5,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 @WebServlet(urlPatterns = "/customer")
 public class CustomerServlet extends HttpServlet {
     @Override
@@ -33,7 +38,8 @@ public class CustomerServlet extends HttpServlet {
 
             System.out.println(name + " " + address + " " + contact);
 
-            Session session = (Session) req.getServletContext().getAttribute("sessionFactory");
+            SessionFactory sessionFactory = (SessionFactory) req.getServletContext().getAttribute("sessionFactory");
+            Session session = sessionFactory.openSession();
             session.beginTransaction();
             session.save(customer);
             session.getTransaction().commit();

@@ -2,35 +2,37 @@ package session;
 
 import Entity.Customer;
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
-import jakarta.servlet.http.HttpSessionEvent;
-import jakarta.servlet.http.HttpSessionListener;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 
 @WebListener
-public class SessionFactoryListener implements HttpSessionListener {
+public class SessionFactoryListener implements ServletContextListener {
     @Override
-    public void sessionCreated(HttpSessionEvent se) {
-        SessionFactory sessionFactory = new MetadataSources(new StandardServiceRegistryBuilder()
-                .loadProperties("hibernate.properties").build())
+    public void contextInitialized(ServletContextEvent sce) {
+        SessionFactory  sessionFactory = new Configuration()
+                .configure("/session/hibernate.cfg.xml")
                 .addAnnotatedClass(Customer.class)
-                .getMetadataBuilder()
-                .build().buildSessionFactory();
+                .buildSessionFactory();
 
-        ServletContext servletContext = se.getSession().getServletContext();
+        System.out.println("Session Factory is created");
+
+        ServletContext servletContext = sce.getServletContext();
         servletContext.setAttribute("sessionFactory", sessionFactory);
     }
 
     @Override
-    public void sessionDestroyed(HttpSessionEvent se) {
-        ServletContext servletContext = se.getSession().getServletContext();
+    public void contextDestroyed(ServletContextEvent sce) {
+        ServletContext servletContext = sce.getServletContext();
         SessionFactory sessionFactory = (SessionFactory) servletContext.getAttribute("sessionFactory");
         try {
             sessionFactory.close();
+            System.out.println("Session Factory is closed");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
 }
