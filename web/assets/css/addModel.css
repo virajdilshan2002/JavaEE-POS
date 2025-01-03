@@ -1,0 +1,142 @@
+/* Modal overlay within .options */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Modern translucent overlay */
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal dialog */
+.modal-dialog {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Modern shadow */
+  max-width: 500px;
+  width: 90%;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease-out; /* Smooth fade-in animation */
+}
+
+/* Modal header, footer, and title */
+.modal-header,
+.modal-footer {
+  padding: 15px;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-footer {
+  border-top: 1px solid #dee2e6;
+  border-bottom: none;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Modal body */
+.modal-body {
+  padding: 20px;
+  font-size: 16px;
+}
+
+/* Form elements (inputs and textarea) within .options modal */
+.modal input,
+.modal textarea {
+  width: calc(100% - 24px);
+  padding: 12px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modal input:focus,
+.modal textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+.modal textarea {
+  resize: none; /* Prevent resizing for modern appearance */
+}
+
+/* Label styling */
+.modal label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: block;
+  color: #333;
+}
+
+/* Form group */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Buttons within .options modal */
+.modal button {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  margin: 5px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #6c757d;
+}
+
+.btn-close:hover {
+  color: #000;
+}
+
+/* Smooth fade-in animation for modal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
