@@ -1,29 +1,60 @@
-import Entity.Customer;
+import entity.Customer;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.util.List;
 
 @WebServlet(urlPatterns = "/customer")
 public class CustomerServlet extends HttpServlet {
+
+    List<Customer> customerList;
+
     @Override
     public void init(ServletConfig config) throws ServletException {
-        System.out.println("Customer Servlet is initialized");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("Customer doGet() is called");
+        try {
+            resp.setContentType("application/json");
+
+            //get all customers
+            SessionFactory sessionFactory = (SessionFactory) req.getServletContext().getAttribute("sessionFactory");
+            Session session = sessionFactory.openSession();
+            customerList = session.createQuery("From Customer", Customer.class).list();
+            if (customerList == null) {
+                resp.getWriter().write("customer table is empty");
+                return;
+            }
+
+            //create json array
+            JsonArrayBuilder allCusJson = Json.createArrayBuilder();
+
+            for (Customer customer : customerList) {
+                //create a single json object
+                JsonObjectBuilder cusJson = Json.createObjectBuilder();
+                cusJson.add("id", customer.getId());
+                cusJson.add("name", customer.getName());
+                cusJson.add("address", customer.getAddress());
+                cusJson.add("contact", customer.getContact());
+
+                allCusJson.add(cusJson.build());
+            }
+            resp.getWriter().write(allCusJson.build().toString());
+        } catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -35,8 +66,6 @@ public class CustomerServlet extends HttpServlet {
             String contact = req.getParameter("contact");
 
             Customer customer = new Customer(1, name, address, contact);
-
-            System.out.println(name + " " + address + " " + contact);
 
             SessionFactory sessionFactory = (SessionFactory) req.getServletContext().getAttribute("sessionFactory");
             Session session = sessionFactory.openSession();
@@ -62,4 +91,5 @@ public class CustomerServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doDelete(req, resp);
     }
+
 }

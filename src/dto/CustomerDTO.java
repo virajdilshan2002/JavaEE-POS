@@ -1,29 +1,15 @@
-package Entity;
+package dto;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "customer")
-public class Customer {
-    @Id
-    @Column(name = "cus_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CustomerDTO {
     private int id;
-
-    @Column(name = "cus_name")
     private String name;
-
-    @Column(name = "cus_address")
     private String address;
-
-    @Column(name = "cus_contact")
     private String contact;
 
-    public Customer() {
-
+    public CustomerDTO() {
     }
 
-    public Customer(int id, String name, String address, String contact) {
+    public CustomerDTO(int id, String name, String address, String contact) {
         this.id = id;
         this.name = name;
         this.address = address;

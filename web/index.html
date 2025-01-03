@@ -404,27 +404,59 @@
     <script src="assets/js/time-date.js"></script>
     <script src="assets/js/dataInputModel.js"></script>
 
-    <!--  ADD CUSTOMER-->
     <script>
-          $('#saveCusBtn').on("click", function () {
-              $.ajax({
-                url:"http://localhost:8080/JavaEEPOS/customer",
-                method:"POST",
-                async:false,
-                data:{
-                    id:$('#customerId').val(),
-                  name:$('#customerName').val(),
-                  address:$('#customerAddress').val(),
-                  contact:$('#customerContact').val()
-                },
-                success: (res) => {
-                  alert("Customer Added Successfully!")
-                },
-                error: (err) => {
-                  console.log(err)
-                }
-              })
-          });
-    </script>
+      // ADD CUSTOMER
+      $('#saveCusBtn').on("click", function () {
+        $.ajax({
+          url:"http://localhost:8080/POS/customer",
+          method:"POST",
+          async:false,
+          data:{
+            id:$('#customerId').val(),
+            name:$('#customerName').val(),
+            address:$('#customerAddress').val(),
+            contact:$('#customerContact').val()
+          },
+          success: (res) => {
+            alert("Customer Added Successfully!")
+            $('#closeCusModal').click()
+            loadCustomerTable()
+          },
+          error: (err) => {
+            console.log(err)
+          }
+        })
+      });
+
+      // LOAD TABLE DATA
+      function loadCustomerTable() {
+        $.ajax({
+          url:"http://localhost:8080/POS/customer",
+          method:"GET",
+          async:false,
+          success: (res) => {
+            $('#customerTable').empty()
+            res.forEach((cus) => {
+              $('#customerTable').append(`
+                <tr>
+                  <td>${cus.id}</td>
+                  <td>${cus.name}</td>
+                  <td>${cus.address}</td>
+                  <td>${cus.contact}</td>
+                </tr>
+            `)
+            })
+          },
+          error: (err) => {
+            console.log(err)
+          }
+        })
+      }
+      $('#refreshCusTable').on("click", function () {
+        loadCustomerTable()
+      })
+
+      loadCustomerTable()
+  </script>
   </body>
 </html>

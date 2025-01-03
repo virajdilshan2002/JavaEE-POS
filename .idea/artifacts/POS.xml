@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="JavaEEPOS">
-    <output-path>$PROJECT_DIR$/out/artifacts/JavaEEPOS</output-path>
+  <artifact type="exploded-war" name="POS">
+    <output-path>$PROJECT_DIR$/out/artifacts/POS</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="JavaEE - POS/web/Web" />
       <element id="directory" name="WEB-INF">
@@ -10,6 +10,7 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="antlr-2.7.7" />
           <element id="library" level="project" name="commons-dbcp2-2.13.0" />
+          <element id="library" level="project" name="javax.json-1.1.4" />
           <element id="library" level="project" name="mysql-connector-j-9.1.0" />
         </element>
       </element>
